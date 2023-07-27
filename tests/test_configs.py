@@ -1,8 +1,7 @@
 import unittest
-import json
 import yaml
 import platformdirs
-from src.config_builder.config_builder import load_config, _build_file_list, LoadConfigException
+from src.config_builder import load_config, _build_file_list, LoadConfigException
 from os import path, environ
 
 MYDIR = path.split(__file__)[0]

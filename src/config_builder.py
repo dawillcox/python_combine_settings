@@ -6,10 +6,10 @@ from os import path, environ
 from typing import Union, List
 import copy
 
-#
-# class LoadConfigException(Exception):
-#     def __init__(self, message):
-#         Exception.__init__(self, message)
+
+class LoadConfigException(Exception):
+    def __init__(self, message):
+        Exception.__init__(self, message)
 
 
 LEGAL_EXTS: set = set(['yml', 'yaml', 'json'])
