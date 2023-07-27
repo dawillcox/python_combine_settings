@@ -2,7 +2,7 @@ import unittest
 import json
 import yaml
 import platformdirs
-from src.config_builder.config_builder import load_config, _build_file_list
+from src.config_builder.config_builder import load_config, _build_file_list, LoadConfigException
 from os import path, environ
 
 MYDIR = path.split(__file__)[0]
@@ -13,7 +13,7 @@ CONF_NAME = 'test.yml'
 APPLICATION = 'TestApp'
 
 
-class MyTestCase(unittest.TestCase):
+class TestCases(unittest.TestCase):
     def test_base(self):
         conf = load_config(CONF_NAME, base_config=BASECONF)
         self.validate_base_only(conf)
@@ -92,6 +92,29 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(files[0], OVERRIDE)
         files = files[1:]
         self.assertEqual(len(files), 0)
+
+
+class ErrorCases(unittest.TestCase):
+    def test_missing_conf_name(self):
+        try:
+            load_config(None)
+        except LoadConfigException:
+            return   # success
+        self.fail("Missing config name should fail")
+
+    def test_bad_extension(self):
+        try:
+            load_config('conf.other')
+        except LoadConfigException:
+            return      # success
+        self.fail("Didn't reject bad file extension")
+
+    def test_bad_base(self):
+        try:
+            load_config(CONF_NAME, base_config=23)
+        except LoadConfigException:
+            return      # success
+        self.fail('Should have rejected incorrect base_config')
 
 
 if __name__ == '__main__':

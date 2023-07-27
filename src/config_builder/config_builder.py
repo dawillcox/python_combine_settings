@@ -51,20 +51,6 @@ def load_config(config_name: str,
                              base_config=base_config,
                              overrides=overrides)
 
-    # site_dirs = platformdirs.site_config_dir(application, multipath=True)
-    # files += [path.join(d, config_name) for d in site_dirs.split(':')]
-    # files += [path.join(platformdirs.user_config_dir(application), config_name)]
-    #
-    # venv = environ.get('VIRTUAL_ENV')
-    # if venv:
-    #     if application:
-    #         files += [path.join(venv, 'config', application, config_name)]
-    #     else:
-    #         files += [path.join(venv, 'config', config_name)]
-    #
-    # if overrides:
-    #     files += [overrides]
-
     for file in files:
         if path.exists(file):
             with open(file, 'r') as f:
@@ -82,7 +68,7 @@ def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> Non
     """
     Modify d1 in place from d2. If an entry in d1 and the corresponding entry in d2 are
     both mappings, merge the two in place. Otherwise, any entry in d2 replaces any existing
-    value in d1.
+    value in d1. Note that d1 is updated in place, so the original content is lost.
     :param d1: Mapping to be updated
     :param d2: Mapping to update
     :return: The modified d1
