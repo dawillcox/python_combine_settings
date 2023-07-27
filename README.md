@@ -55,3 +55,4 @@ Where:
 * `base_config` (optional) specifies a default configurations for the application. It can be either the absolute path to a configuration file to load, or a dict with the default configuration.
 * `application` (optional) is an application name to use with `plataformdirs`.
 * `overrides`(optional) is the full pathname of a file that overrides any settings found earlier. This can be use for, for example, testing.
+

@@ -26,8 +26,9 @@ dependencies = [
 ]
 
 [project.urls]
-#"Homepage" = "https://github.com/pypa/mail_sender"
-#"Bug Tracker" = "https://github.com/pypa/mail_sender/issues"
-#Documentation = "https://readthedocs.org"
+Homepage = "https://github.com/dawillcox/python_config_builder"
+"Bug Tracker" = "https://github.com/dawillcox/python_config_builder/issues"
+Documentation = "https://github.com/dawillcox/python_config_builder/blob/main/README.md"
 # Repository = "https://github.com/me/spam.git"
 # Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+
