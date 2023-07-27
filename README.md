@@ -3,6 +3,10 @@
 configuration files. Files are read in order from most generic to most specific,
 with each updating settings from the previous files.
 
+Yes, there are other packages that let an application load a configuration.
+I wanted something that merged application configurations from multiple
+sources
+
 ## Operation
 ### Determining Configurations to Combine
 `config_builder` uses [`platformdirs`](https://pypi.org/project/platformdirs/)
@@ -40,14 +44,12 @@ For each `key` in `latest.keys()`:
 config = config_builder(config_name: str,
                         application: str = None,
                         base_config: Union[dict, str] = None,
-                        overrides: str = None,
-                        )
+                        overrides: str = None
+                       )
+
 ```
 Where:
-* `config_name` is the name of the configuration file to look for in each directory.
-* `base_config` Specifies default configurations for an application. It can be either the absolute path to a `config_name` file to load, or a dict with the default configuration.
-* `application` is an optional application name to use with `plataformdirs`.
-* `overrides` is the full pathname of a file (ignoring `config_name`) that overrides any settings found earlier. This can be use for, for example, testing.
-Only `config_name` is mandatory.
-## Limitations
-Currently, only YAML files with suffix `.yml` or `.yaml` are supported.
+* `config_name` (mandatory) is the name of the configuration file to look for in each directory.
+* `base_config` (optional) specifies a default configurations for the application. It can be either the absolute path to a configuration file to load, or a dict with the default configuration.
+* `application` (optional) is an application name to use with `plataformdirs`.
+* `overrides`(optional) is the full pathname of a file that overrides any settings found earlier. This can be use for, for example, testing.
