@@ -16,7 +16,7 @@ LEGAL_EXTS: set = set(['yml', 'yaml', 'json'])
 
 
 def load_config(config_name: str,
-                application: Optional[str] = None,
+                application: Optional[str] = '',
                 base_config: Optional[Union[dict, str]] = None,
                 overrides: Optional[Union[dict, str]] = None,
                 ) -> dict:
@@ -93,7 +93,7 @@ def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> Non
 
 
 def _build_file_list(config_name: str,
-                     application: Optional[str] = None,
+                     application: Optional[str] = '',
                      base_config: Optional[Union[dict, str]] = None,
                      overrides: Optional[Union[dict, str]] = None,
                      ) -> List[str]:
@@ -115,10 +115,7 @@ def _build_file_list(config_name: str,
 
     venv = environ.get('VIRTUAL_ENV')
     if venv:
-        if application:
-            files.append(path.join(venv, 'config', application, config_name))
-        else:
-            files.append(path.join(venv, 'config', config_name))
+        files.append(path.join(venv, 'config', application, config_name))
 
     if isinstance(overrides, str):
         files.append(overrides)
