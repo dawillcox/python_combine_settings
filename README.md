@@ -70,7 +70,7 @@ This can be useful for, for example, testing.
 
 ## Testing
 ```bash
-pip install coverage unittest platformdirs pyYAML
+pip install coverage platformdirs pyYAML
 coverage run -m unittest
 coverage report -m
 ```
