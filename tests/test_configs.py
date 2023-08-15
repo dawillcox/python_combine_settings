@@ -92,28 +92,27 @@ class TestCases(unittest.TestCase):
         files = files[1:]
         self.assertEqual(len(files), 0)
 
+    def test_explicit(self):
+        base_config = {'p1': 'v1',
+                       'p2': 'v2'}
+        overrides = {'p2': 'o2',
+                     'p3': 'o3'}
+        conf = load_config('not/legal.json', base_config=base_config, overrides=overrides)
+        self.assertEqual('v1', conf.get('p1'))
+        self.assertEqual('o2', conf.get('p2'))
+        self.assertEqual('o3', conf.get('p3'))
+
 
 class ErrorCases(unittest.TestCase):
     def test_missing_conf_name(self):
-        try:
-            load_config(None)
-        except LoadConfigException:
-            return   # success
-        self.fail("Missing config name should fail")
+        self.assertRaises(LoadConfigException, lambda: load_config(None))
 
     def test_bad_extension(self):
-        try:
-            load_config('conf.other')
-        except LoadConfigException:
-            return      # success
-        self.fail("Didn't reject bad file extension")
+        self.assertRaises(LoadConfigException, lambda: load_config('conf.other'))
 
     def test_bad_base(self):
-        try:
-            load_config(CONF_NAME, base_config=23)
-        except LoadConfigException:
-            return      # success
-        self.fail('Should have rejected incorrect base_config')
+        self.assertRaises(LoadConfigException,
+                          lambda: load_config(CONF_NAME, base_config=23))
 
 
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ requires = ["setuptools>=61.0",
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "config_builder_daw30410"
+name = "config_builder"
 version = "0.0.1"
 authors = [
   { name="David Willcox", email="daw30410@yahoo.com" },
@@ -30,5 +30,5 @@ Homepage = "https://github.com/dawillcox/python_config_builder"
 "Bug Tracker" = "https://github.com/dawillcox/python_config_builder/issues"
 Documentation = "https://github.com/dawillcox/python_config_builder/blob/main/README.md"
 Repository = "https://github.com/me/dawillcox/python_config_builder.git"
-# Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+Changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
 

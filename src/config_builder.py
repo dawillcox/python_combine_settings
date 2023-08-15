@@ -3,7 +3,7 @@ import json
 import collections
 import platformdirs
 from os import path, environ
-from typing import Union, List
+from typing import Union, List, Optional
 import copy
 
 
@@ -16,26 +16,25 @@ LEGAL_EXTS: set = set(['yml', 'yaml', 'json'])
 
 
 def load_config(config_name: str,
-                application: str = None,
-                base_config: Union[dict, str] = None,
-                overrides: str = None,
+                application: Optional[str] = None,
+                base_config: Optional[Union[dict, str]] = None,
+                overrides: Optional[Union[dict, str]] = None,
                 ) -> dict:
     """
     Load a configuration by merging multiple files.
 
-    :param config_name: Name of each configuration file to load.
-    :param application: (optional) Application name to use with platformdirs
-    :param base_config: (optional) Default configuration to start with.
-                        This can be either the full path to a config file,
+    :param config_name: Name of each configuration file to load. (mandatory)
+    :param application: Application name to use with platformdirs
+    :param base_config: Default configuration to start with.
+                        This can be either the full path to a config file
                         or a dict with the actual configuration.
-    :param overrides: (optional) Full path to a file (ignoring config_name) of a file with overrides.
+    :param overrides:   Full path to a file (ignoring config_name) of a file with overrides
+                        or a dict with the actual override settings.
     :return: Mapping with the assembled settings.
     """
-    # Load global configurations (service type, SMTP url and port, etc)
-    files = []
+
     if not config_name:
         raise LoadConfigException('config_name required')
-    # parts = config_name.split('.')
     ext = config_name.split('.')[-1]
     if ext not in LEGAL_EXTS:
         raise LoadConfigException('Only yaml or json files supported')
@@ -46,6 +45,12 @@ def load_config(config_name: str,
             base_config = None
         elif not isinstance(base_config, str):
             raise LoadConfigException('base_config must be str or dict')
+
+    if isinstance(overrides, dict):
+        final_overrides = copy.deepcopy(overrides)
+        overrides = None
+    else:
+        final_overrides = {}
 
     files = _build_file_list(config_name,
                              application=application,
@@ -62,6 +67,9 @@ def load_config(config_name: str,
                 else:
                     newconf = yaml.safe_load(f)
                 _merge_dict(conf, newconf)
+
+    _merge_dict(conf, final_overrides)
+
     return conf
 
 
@@ -85,9 +93,9 @@ def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> Non
 
 
 def _build_file_list(config_name: str,
-                     application: str = None,
-                     base_config: Union[dict, str] = None,
-                     overrides: str = None,
+                     application: Optional[str] = None,
+                     base_config: Optional[Union[dict, str]] = None,
+                     overrides: Optional[Union[dict, str]] = None,
                      ) -> List[str]:
     """
     Build list of files to load config from. (This is a separate function to facilitate unit tests.)
@@ -99,20 +107,20 @@ def _build_file_list(config_name: str,
     """
     files = []
     if isinstance(base_config, str):
-        files += [base_config]
+        files.append(base_config)
 
     site_dirs = platformdirs.site_config_dir(application, multipath=True)
-    files += [path.join(d, config_name) for d in site_dirs.split(':')]
-    files += [path.join(platformdirs.user_config_dir(application), config_name)]
+    files.extend([path.join(d, config_name) for d in site_dirs.split(':')])
+    files.append(path.join(platformdirs.user_config_dir(application), config_name))
 
     venv = environ.get('VIRTUAL_ENV')
     if venv:
         if application:
-            files += [path.join(venv, 'config', application, config_name)]
+            files.append(path.join(venv, 'config', application, config_name))
         else:
-            files += [path.join(venv, 'config', config_name)]
+            files.append(path.join(venv, 'config', config_name))
 
-    if overrides:
-        files += [overrides]
+    if isinstance(overrides, str):
+        files.append(overrides)
 
     return files
