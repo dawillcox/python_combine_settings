@@ -1,5 +1,5 @@
 # CONFIG_BUILDER
-Build a Python application from a hierarchy of files.
+Build configuration settings from a hierarchy of files.
 
 `config_builder` constructs a configuration for an application, combining settings from a list of
 configuration files. Files are read in order from most generic to most specific,
