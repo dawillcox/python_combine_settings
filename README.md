@@ -1,7 +1,7 @@
-# CONFIG_BUILDER
+# COMBINE_SETTINGS
 Build configuration settings from a hierarchy of files.
 
-`config_builder` constructs a configuration for an application, combining settings from a list of
+`combine_settings` constructs a configuration for an application, combining settings from a list of
 configuration files. Files are read in order from most generic to most specific,
 with each found configuration updating settings from the previous files. Settings can be system-wide,
 user-specific (possibly read-only to the user),
@@ -15,7 +15,7 @@ sources: application or library defaults, system-wide, and user and environment 
 
 ## Operation
 ### Determining Configurations to Combine
-`config_builder` uses [`platformdirs`](https://pypi.org/project/platformdirs/)
+`combine_settings` uses [`platformdirs`](https://pypi.org/project/platformdirs/)
 to find the OS-specific location of configuration files for an application.
 Existing configuration files are loaded in order. Settings from each extend or
 replace settings found in previous files.
@@ -48,7 +48,7 @@ For each `key` in `latest.keys()`:
 
 ## Usage
 ```python3.7
-from config_builder import load_config
+from combine_settings import load_config
 
 config = load_config(config_name: str,
                      application: Optional[str] = None,

@@ -1,7 +1,7 @@
 import unittest
 import yaml
 import platformdirs
-from src.config_builder import load_config, _build_file_list, LoadConfigException
+from src.combine_settings import load_config, _build_file_list, LoadConfigException
 from os import path, environ
 
 MYDIR = path.split(__file__)[0]
