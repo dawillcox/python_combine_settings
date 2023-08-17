@@ -82,11 +82,14 @@ class TestCases(unittest.TestCase):
         for sd in site_dirs.split(':'):
             self.assertEqual(files[0], path.join(sd, CONF_NAME))
             files = files[1:]
-        self.assertEqual(files[0], path.join(platformdirs.user_config_dir(APPLICATION), CONF_NAME))
+        self.assertEqual(files[0],
+                         path.join(platformdirs.user_config_dir(APPLICATION),
+                                   CONF_NAME))
         files = files[1:]
         venv = environ.get('VIRTUAL_ENV')
         if venv:
-            self.assertEqual(files[0], path.join(venv, 'config', APPLICATION, CONF_NAME))
+            self.assertEqual(files[0],
+                             path.join(venv, 'config', APPLICATION, CONF_NAME))
             files = files[1:]
         self.assertEqual(files[0], OVERRIDE)
         files = files[1:]
@@ -97,7 +100,9 @@ class TestCases(unittest.TestCase):
                        'p2': 'v2'}
         overrides = {'p2': 'o2',
                      'p3': 'o3'}
-        conf = load_config('not/legal.json', base_config=base_config, overrides=overrides)
+        conf = load_config('not/legal.json',
+                           base_config=base_config,
+                           overrides=overrides)
         self.assertEqual('v1', conf.get('p1'))
         self.assertEqual('o2', conf.get('p2'))
         self.assertEqual('o3', conf.get('p3'))

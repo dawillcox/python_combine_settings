@@ -28,8 +28,8 @@ def load_config(config_name: str,
     :param base_config: Default configuration to start with.
                         This can be either the full path to a config file
                         or a dict with the actual configuration.
-    :param overrides:   Full path to a file (ignoring config_name) of a file with overrides
-                        or a dict with the actual override settings.
+    :param overrides:   Full path to a file (ignoring config_name) of a file
+                        with overrides or a dict with the actual override settings.
     :return: Mapping with the assembled settings.
     """
 
@@ -76,15 +76,17 @@ def load_config(config_name: str,
 def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> None:
     """
     Modify d1 in place from d2. If an entry in d1 and the corresponding entry in d2 are
-    both mappings, merge the two in place. Otherwise, any entry in d2 replaces any existing
-    value in d1. Note that d1 is updated in place, so the original content is lost.
+    both mappings, merge the two in place. Otherwise, any entry in d2 replaces any
+    existing value in d1. Note that d1 is updated in place, so the original content is
+    lost.
     :param d1: Mapping to be updated
     :param d2: Mapping to update
     :return: The modified d1
     """
     for k, v2 in d2.items():
         v1 = d1.get(k)  # returns None if v1 has no value for this key
-        if isinstance(v1, collections.abc.Mapping) and isinstance(v2, collections.abc.Mapping):
+        if isinstance(v1, collections.abc.Mapping) and \
+                isinstance(v2, collections.abc.Mapping):
             _merge_dict(v1, v2)
         else:
             d1[k] = v2
@@ -98,7 +100,8 @@ def _build_file_list(config_name: str,
                      overrides: Optional[Union[dict, str]] = None,
                      ) -> List[str]:
     """
-    Build list of files to load config from. (This is a separate function to facilitate unit tests.)
+    Build list of files to load config from. (This is a separate function to
+    facilitate unit tests.)
     :param config_name:
     :param application:
     :param base_config:
