@@ -1,9 +1,8 @@
 import yaml
 import json
-import collections
 import platformdirs
 from os import path, environ
-from typing import Union, List, Optional
+from typing import Union, List, Optional, Mapping
 import copy
 
 
@@ -16,10 +15,10 @@ LEGAL_EXTS: set = set(['yml', 'yaml', 'json'])
 
 
 def load_config(config_name: str,
-                application: Optional[str] = '',
-                base_config: Optional[Union[dict, str]] = None,
-                overrides: Optional[Union[dict, str]] = None,
-                ) -> dict:
+                application: str = '',
+                base_config: Optional[Union[Mapping, str]] = None,
+                overrides: Optional[Union[Mapping, str]] = None,
+                ) -> Mapping:
     """
     Load a configuration by merging multiple files.
 
@@ -40,13 +39,13 @@ def load_config(config_name: str,
         raise LoadConfigException('Only yaml or json files supported')
     conf = {}
     if base_config:
-        if isinstance(base_config, dict):
+        if isinstance(base_config, Mapping):
             conf = copy.deepcopy(base_config)
             base_config = None
         elif not isinstance(base_config, str):
             raise LoadConfigException('base_config must be str or dict')
 
-    if isinstance(overrides, dict):
+    if isinstance(overrides, Mapping):
         final_overrides = copy.deepcopy(overrides)
         overrides = None
     else:
@@ -73,7 +72,7 @@ def load_config(config_name: str,
     return conf
 
 
-def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> None:
+def _merge_dict(d1: Mapping, d2: Mapping) -> None:
     """
     Modify d1 in place from d2. If an entry in d1 and the corresponding entry in d2 are
     both mappings, merge the two in place. Otherwise, any entry in d2 replaces any
@@ -85,8 +84,7 @@ def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> Non
     """
     for k, v2 in d2.items():
         v1 = d1.get(k)  # returns None if v1 has no value for this key
-        if isinstance(v1, collections.abc.Mapping) and \
-                isinstance(v2, collections.abc.Mapping):
+        if isinstance(v1, Mapping) and isinstance(v2, Mapping):
             _merge_dict(v1, v2)
         else:
             d1[k] = v2
@@ -95,9 +93,9 @@ def _merge_dict(d1: collections.abc.Mapping, d2: collections.abc.Mapping) -> Non
 
 
 def _build_file_list(config_name: str,
-                     application: Optional[str] = '',
-                     base_config: Optional[Union[dict, str]] = None,
-                     overrides: Optional[Union[dict, str]] = None,
+                     application: str = '',
+                     base_config: Optional[Union[Mapping,  str]] = None,
+                     overrides: Optional[Union[Mapping,  str]] = None,
                      ) -> List[str]:
     """
     Build list of files to load config from. (This is a separate function to
