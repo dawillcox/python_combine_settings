@@ -78,7 +78,7 @@ paths = config_file_list(config_name: str,
                         overrides: Optional[str] = None,
                         ) -> List[str]
 ```
-The parameters are the same as for `load_config()`, except `overerides`
+The parameters are the same as for `load_config()`, except `overrides`
 and `base_config` are ignored if they aren't strings. The return is
 a list of full paths to files that will be searched, in the order of search.
 ## Testing
