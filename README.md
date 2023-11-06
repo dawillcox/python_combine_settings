@@ -51,7 +51,7 @@ For each `key` in `latest.keys()`:
 from combine_settings import load_config
 
 config = load_config(config_name: str,
-                     application: Optional[str] = None,
+                     application: Optional[str] = '',
                      base_config: Optional[Union[dict, str]] = None,
                      overrides: Optional[Union[dict, str]] = None,
                      ) -> dict
@@ -68,6 +68,19 @@ using the standard process. It can either be the full path to a file
 to load or a dict with settings.
 This can be useful for, for example, testing.
 
+As a potential aid for user configuration, you can get the list of files
+that will be searched on your particular installation.
+
+```python3.7
+paths = config_file_list(config_name: str,
+                        application: Optional[str] = '',
+                        base_config: Optional[str] = None,
+                        overrides: Optional[str] = None,
+                        ) -> List[str]
+```
+The parameters are the same as for `load_config()`, except `overerides`
+and `base_config` are ignored if they aren't strings. The return is
+a list of full paths to files that will be searched, in the order of search.
 ## Testing
 ```bash
 pip install coverage platformdirs pyYAML

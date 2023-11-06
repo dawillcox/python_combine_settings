@@ -51,7 +51,7 @@ def load_config(config_name: str,
     else:
         final_overrides = {}
 
-    files = _build_file_list(config_name,
+    files = config_file_list(config_name,
                              application=application,
                              base_config=base_config,
                              overrides=overrides)
@@ -92,19 +92,18 @@ def _merge_dict(d1: Mapping, d2: Mapping) -> None:
     return d1
 
 
-def _build_file_list(config_name: str,
+def config_file_list(config_name: str,
                      application: str = '',
                      base_config: Optional[Union[Mapping,  str]] = None,
                      overrides: Optional[Union[Mapping,  str]] = None,
                      ) -> List[str]:
     """
-    Build list of files to load config from. (This is a separate function to
-    facilitate unit tests.)
-    :param config_name:
-    :param application:
-    :param base_config:
-    :param overrides:
-    :return:
+    Return list of files that will be loaded
+    :param config_name: Name of configuration files
+    :param application: Calling application, if appropriate
+    :param base_config: Optional base configuration file
+    :param overrides: Optional final override file
+    :return: List of files in order searched
     """
     files = []
     if isinstance(base_config, str):

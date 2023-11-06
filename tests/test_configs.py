@@ -1,7 +1,7 @@
 import unittest
 import yaml
 import platformdirs
-from src.combine_settings import load_config, _build_file_list, LoadConfigException
+from src.combine_settings import load_config, config_file_list, LoadConfigException
 from os import path, environ
 
 MYDIR = path.split(__file__)[0]
@@ -72,7 +72,7 @@ class TestCases(unittest.TestCase):
         self.validate_override(conf)
 
     def test_file_list(self):
-        files = _build_file_list(CONF_NAME,
+        files = config_file_list(CONF_NAME,
                                  application=APPLICATION,
                                  base_config=BASECONF,
                                  overrides=OVERRIDE)
